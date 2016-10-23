@@ -10,6 +10,7 @@ train <- function(dat_train, label_train, par=NULL){
   ### Input: 
   ###  -  processed features from images 
   ###  -  class labels for training images
+  ###  -  parameters for gbm.fit function
   ### Output: training model specification
   
   ### load libraries
