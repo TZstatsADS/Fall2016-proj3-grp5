@@ -2,10 +2,6 @@
 ### Train a classification model with training images ###
 #########################################################
 
-### Author: Yuting Ma
-### Project 3
-### ADS Spring 2016
-
 
 train <- function(dat_train, label_train, par=NULL){
   
@@ -21,17 +17,22 @@ train <- function(dat_train, label_train, par=NULL){
   
   ### Train with gradient boosting model
   if(is.null(par)){
-    depth <- 3
+    depth = 1
+    shrinkage = 1
+    n.trees = 100
   } else {
-    depth <- par$depth
+    depth = par$depth
+    shrinkage = par$shrinkage
+    n.trees = par$n.trees
   }
-  fit_gbm <- gbm.fit(x=dat_train, y=label_train,
-                     n.trees=2000,
-                     distribution="bernoulli",
-                     interaction.depth=depth, 
+  fit_gbm = gbm.fit(x=dat_train, y=label_train,
+                     distribution = "bernoulli",
+                     n.trees = n.trees,
+                     interaction.depth = depth, 
+                     shrinkage = shrinkage,
                      bag.fraction = 0.5,
                      verbose=FALSE)
-  best_iter <- gbm.perf(fit_gbm, method="OOB")
+  best_iter = gbm.perf(fit_gbm, method="OOB")
 
   return(list(fit=fit_gbm, iter=best_iter))
 }
