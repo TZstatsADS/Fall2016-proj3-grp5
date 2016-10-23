@@ -8,7 +8,7 @@ library(data.table)
 # img_test_dir <- "./data/testing set/"
 
 ### Import matrix of features X and create vector of labels y
-X = fread("./data/Project3_poodleKFC_train/sift_features.csv")
+X = fread("./data/sift_features.csv")
 X  = t(as.matrix(X))
 y = c(rep(0,1000), rep(1, 1000))
 
@@ -30,13 +30,12 @@ source("./lib/test.R")
 source("./lib/cross_validation.R")
 
 depth = 1
-K = 5  # number of CV folds
 shrinkages = c(.0001, .001, .01, .1, .5)
 
 cv_output = array(dim=c(length(shrinkages), 4))
 for(j in 1:length(shrinkages)){
   cat("j=", j, "\n")
-  cv_output[j,] <- cv.function(X, y, d=depth, shrinkages[j], K)
+  cv_output[j,] <- cv.function(X, y, d=depth, shrinkage=shrinkages[j], n.trees=2000, K=5)
 }
 
 
