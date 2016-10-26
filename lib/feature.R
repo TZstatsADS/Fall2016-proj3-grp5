@@ -2,29 +2,23 @@
 ### Construct visual features for training/testing images ###
 #############################################################
 
-### Author: Yuting Ma
-### Project 3
-### ADS Spring 2016
 
-feature <- function(img_dir, img_name, data_name=NULL){
+feature = function(img_dir){
+  # INPUT: directory with all the images to extract features from
+  # OUTPUT: 
   
-  ### Construct process features for training/testing images
-  ### Sample simple feature: Extract raw pixel values os features
-  
-  ### Input: a directory that contains images ready for processing
-  ### Output: an .RData file contains processed features for the images
-  
-  ### load libraries
   library("EBImage")
   
-  n_files <- length(list.files(img_dir))
+  files = list.files(img_dir)
+
+  for(i in 1:length(files)){
+    
+    img = readImage(paste(img_dir, files[i], sep=''))
+
+    rgb_feature = extract_rgb_feature(img)
+  }
   
-  ### determine img dimensions
-  img0 <-  readImage(paste0(img_dir, img_name, "_", 1, ".jpg"))
-  mat1 <- as.matrix(img0)
-  n_r <- nrow(img0)
-  n_c <- ncol(img0)
-  
+
   ### store vectorized pixel values of images
   dat <- array(dim=c(n_files, n_r*n_c)) 
   for(i in 1:n_files){
