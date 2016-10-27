@@ -4,12 +4,11 @@
 
 library(data.table)
 
-# img_train_dir <- "./data/Project3_poodleKFC_train/images/"
+# img_train_dir <- "./data/images/"
 # img_test_dir <- "./data/testing set/"
 
 ### Import matrix of features X and create vector of labels y
-X = fread("./data/sift_features.csv")
-X  = t(as.matrix(X))
+load("./output/features2.RData")
 y = c(rep(0,1000), rep(1, 1000))
 
 

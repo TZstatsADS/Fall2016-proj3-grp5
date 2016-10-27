@@ -3,7 +3,10 @@
 ########################
 
 
-cv.function <- function(X, y, d=1, shrinkage=0.001, n.trees=100, K=5){
+cv.function <- function(X, y, d=1, shrinkage=0.1, n.trees=100, K=5){
+  source("./lib/train.R")
+  source("./lib/test.R")
+  
   
   n <- length(y)
   n.fold <- floor(n/K)
