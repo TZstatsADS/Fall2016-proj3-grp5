@@ -1,9 +1,8 @@
 library(randomForest)
-library(data.table)
+#library(data.table)
 
-
-X = fread("./data/sift_features.csv")
-X = t(as.matrix(X))
+load("./output/features2.Rdata")
+#X = fread("./data/sift_features.csv")
 y = c(rep(0,1000), rep(1, 1000))
 
 K=5
@@ -11,16 +10,23 @@ n <- length(y)
 n.fold <- floor(n/K)
 s <- sample(rep(1:K, c(rep(n.fold, K-1), n-(K-1)*n.fold)))
 cv.error <- rep(NA, K)
-tm_train <- rep(NA, K)
+time <- rep(NA, K)
 
-for (i in 1:K){
+for (i in 1:5){
   train.data <- X[s != i,]
   train.label <- y[s != i]
   test.data <- X[s == i,]
   test.label <- y[s == i]
-
+  
+  set.seed(415)
+  
   #fit <- randomForest(train.data, as.factor(train.label), ntree=100)
-  tm_train[i] = system.time(fit <- tuneRF(train.data, as.factor(train.label), ntreeTry=50, doBest=TRUE))
+  time[i] = system.time(fit <- tuneRF(train.data, as.factor(train.label), ntreeTry=100, doBest=TRUE))
   pred <- predict(fit, test.data)
   cv.error[i] <- mean(pred != test.label) 
 }
+
+ave.error = mean(cv.error)
+sum.time = sum(time)
+result = list(error=ave.error, time=sum.time, fit=fit)
+save(result, file="./output/cv_RF.RData")
