@@ -9,7 +9,7 @@ library(data.table)
 
 ### Import matrix of features X and create vector of labels y
 load("./output/features2.RData")
-y = c(rep(0,1000), rep(1, 1000))
+y = c(rep(1,1000), rep(0, 1000))
 
 
 # ### Construct visual feature
