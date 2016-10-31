@@ -11,6 +11,15 @@ library(data.table)
 load("./output/features2.RData")
 y = c(rep(1,1000), rep(0, 1000))
 
+#####Add feature names
+siftname = vector()
+for(i in 1:5000){
+  siftname[i]<-paste0("SIFT",i)
+}
+for(i in 5001:6000){
+  siftname[i]<-paste0("Color",i-5000)
+}
+colnames(X)<-siftname
 
 # ### Construct visual feature
 # source("./lib/feature.R")
