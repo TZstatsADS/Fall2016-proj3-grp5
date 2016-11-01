@@ -1,7 +1,7 @@
 library(randomForest)
 
 load("./output/features2.Rdata")
-y = c(rep(0,1000), rep(1, 1000))
+y = c(rep(1,1000), rep(0, 1000))
 
 K=10
 n <- length(y)
