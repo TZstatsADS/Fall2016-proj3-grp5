@@ -3,40 +3,18 @@
 #############################################
 
 library(data.table)
-
-# img_train_dir <- "./data/images/"
-# img_test_dir <- "./data/testing set/"
-
-### Import matrix of features X and create vector of labels y
-load("./output/features2.RData")
-y = c(rep(1,1000), rep(0, 1000))
-
-#####Add feature names
-siftname = vector()
-for(i in 1:5000){
-  siftname[i]<-paste0("SIFT",i)
-}
-for(i in 5001:6000){
-  siftname[i]<-paste0("Color",i-5000)
-}
-colnames(X)<-siftname
-
-
-# ### Construct visual feature
-# source("./lib/feature.R")
-# tm_feature_train <- system.time(dat_train <- feature(img_train_dir, "img_zip_train"))
-# tm_feature_test <- system.time(dat_test <- feature(img_test_dir, "img_zip_test"))
-# save(dat_train, file="./output/feature_train.RData")
-# save(dat_test, file="./output/feature_test.RData")
-
-
-
-####### BASELINE MODEL: depth=1 (tree stumps) ###########################################################
-
-# Model selection with cross-validation: hhoosing between different values of shrinkage for GBM
+source("./lib/train_BL.R")
 source("./lib/train.R")
 source("./lib/test.R")
 source("./lib/cross_validation.R")
+source("./lib/cross_validation_BL.R")
+source("./lib/feature.R")
+
+
+
+####### TUNE BASELINE MODEL: find optimal shrinkage parameter ############################################
+
+# Model selection with cross-validation: hhoosing between different values of shrinkage for GBM
 
 depth = 1
 shrinkages = c(.0001, .001, .01, .1, .5)
@@ -59,12 +37,48 @@ print(cv_gbm_depth1)
 save(cv_gbm_depth1, file="./output/cv_gbm_depth1.Rdata")
 
 
+####### BASELINE MODEL:  ###########################################################
+
+
+### Import matrix of features X and create vector of labels y
+
+X = fread('./data/sift_features.csv')
+X = t(as.matrix(X))
+y = c(rep(1,1000), rep(0, 1000))
+
+
+
+
+
+####### BASELINE MODEL WITH NEW FEATURES: ###########################################################
+
+# load original features:
+X0 = fread('./data/sift_features.csv')
+X0 = t(as.matrix(X))
+
+# Construct new visual features:
+image_dir = "./data/images/"
+
+t_features = system.time(X1 <- feature(image_dir))
+
+# combine original and new features:
+X = cbind(X0, X1)
+  
+# save(X, file="./output/features2.RData")
+# load("./output/features2.RData")
+
+# create labels
+y = c(rep(1,1000), rep(0, 1000))
+
+par = list(depth=1, shrinkage=0.1, n.trees=100)
+cv_output = cv.function(X, y, par=par, K=5)
 
 # Train the model with the entire training set using best combination of shrinkage value (for accuracy)
 # and n.trees (for speed) based on the above CV results:
 par_best = list(depth = 1, 
                 shrinkage = 0.1, 
                 n.trees = 100)
+
 tm_train = system.time(fit_train_gbm_depth1 <- train(X, y, par_best))
 save(fit_train_gbm_depth1, file="./output/fit_train_gbm_depth1.RData")
 
