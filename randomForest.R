@@ -1,18 +1,16 @@
 library(randomForest)
-#library(data.table)
 
 load("./output/features2.Rdata")
-#X = fread("./data/sift_features.csv")
 y = c(rep(0,1000), rep(1, 1000))
 
-K=5
+K=10
 n <- length(y)
 n.fold <- floor(n/K)
 s <- sample(rep(1:K, c(rep(n.fold, K-1), n-(K-1)*n.fold)))
 cv.error <- rep(NA, K)
 time <- rep(NA, K)
 
-for (i in 1:5){
+for (i in 1:K){
   train.data <- X[s != i,]
   train.label <- y[s != i]
   test.data <- X[s == i,]
@@ -21,7 +19,8 @@ for (i in 1:5){
   set.seed(415)
   
   #fit <- randomForest(train.data, as.factor(train.label), ntree=100)
-  time[i] = system.time(fit <- tuneRF(train.data, as.factor(train.label), ntreeTry=30, doBest=TRUE))
+  #time[i] = system.time(fit <- tuneRF(train.data, as.factor(train.label), ntreeTry=30, doBest=TRUE))
+  time[i] = system.time(fit <- tuneRF(train.data, as.factor(train.label), doBest=TRUE))
   pred <- predict(fit, test.data)
   cv.error[i] <- mean(pred != test.label) 
 }
