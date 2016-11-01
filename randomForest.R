@@ -21,7 +21,7 @@ for (i in 1:5){
   set.seed(415)
   
   #fit <- randomForest(train.data, as.factor(train.label), ntree=100)
-  time[i] = system.time(fit <- tuneRF(train.data, as.factor(train.label), ntreeTry=100, doBest=TRUE))
+  time[i] = system.time(fit <- tuneRF(train.data, as.factor(train.label), ntreeTry=30, doBest=TRUE))
   pred <- predict(fit, test.data)
   cv.error[i] <- mean(pred != test.label) 
 }
@@ -29,4 +29,4 @@ for (i in 1:5){
 ave.error = mean(cv.error)
 sum.time = sum(time)
 result = list(error=ave.error, time=sum.time, fit=fit)
-save(result, file="./output/cv_RF.RData")
+write(result, file="./output/cv_RF.RData",append=TRUE)
