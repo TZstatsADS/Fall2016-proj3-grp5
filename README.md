@@ -24,6 +24,7 @@ Mengya Zhao... <br/>
 **Necessary libraries/packages:** <br/>
 data.table <br/>
 EBImage <br/>
+
    source("https://bioconductor.org/biocLite.R")  
    biocLite("EBImage")  
 gbm <br/>
