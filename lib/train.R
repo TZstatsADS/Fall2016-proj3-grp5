@@ -3,11 +3,11 @@
 ##################################################
 
 
-train = function(X, y, savedir=NULL){
+train = function(X, y, saveas=NULL){
   # INPUT: 
   #     X = matrix in images*features format
   #     y = class labels for training images
-  #     savedir = if defined, save trained models in this directory
+  #     saveas (optional): path and file name to save trained models, e.g. './output/models.RData'
   #
   # OUTPUT: trained model objects for both basline and advanced models
   
@@ -32,6 +32,7 @@ train = function(X, y, savedir=NULL){
     test_err_BL[j] = cross_validation(X, y, par=par, K=5, model='BL')
   }
   
+  cat('Grid of test error for BL model tuning: \n') 
   print(test_err_BL)   
   
   # Now train BL model on the whole data using optimal shrinkage value
@@ -63,7 +64,7 @@ train = function(X, y, savedir=NULL){
       
     }
   }
-   
+  cat('Grid of test error for ADV model tuning: \n') 
   print(test_err_ADV) 
   
   # Now train ADV model on the whole data using optimal shrinkage value
@@ -86,8 +87,8 @@ train = function(X, y, savedir=NULL){
   
   models = list(BL_model = BL_model, ADV_model = ADV_model)
   
-  if(!is.null(savedir))
-    save(models, file = paste(savedir, 'BL_and_ADV_models.RData', sep=''))
+  if(!is.null(saveas))
+    save(models, file = saveas)
   
   return(models)
   
