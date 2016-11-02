@@ -16,13 +16,13 @@ test = function(fit_train, dat_test){
   library('xgboost')
   
   pred = switch(class(fit_train), 
-                 gbm = predict(fit_train, 
-                               newdata = dat_test, 
-                               n.trees = fit_train$n.trees, 
-                               type="response"),
-                 
-                 xgb = predict(fit_train, 
-                               newdata = dat_test)
+                gbm = predict(fit_train, 
+                              newdata = dat_test, 
+                              n.trees = fit_train$n.trees, 
+                              type="response"),
+                
+                xgb.Booster = predict(fit_train, 
+                                      newdata = dat_test)
   )
 
 

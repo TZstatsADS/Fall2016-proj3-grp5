@@ -3,7 +3,7 @@
 ##################################################
 
 
-Train = function(X, y){
+train = function(X, y){
   # Input: 
   #   X =  matrix images*features  
   #   y = class labels for training images
@@ -23,7 +23,11 @@ Train = function(X, y){
   test_err = numeric(length(shrinkages))
   for(j in 1:length(shrinkages)){
     cat("j=", j, "\n")
-    par = list(depth=1, shrinkage=shrinkages[j], n.trees=100)
+    
+    par = list(depth=1, 
+               shrinkage=shrinkages[j], 
+               n.trees=100)
+    
     test_err[j] = cross_validation(X, y, par=par, K=5, model='BL')
   }
   
@@ -35,47 +39,43 @@ Train = function(X, y){
 
   ############################################### ADVANCED MODEL ###################################################### 
   
-  library(data.table)
-  library(xgboost)
-  
-  dtrain = xgb.DMatrix(data = X, label = y)
-  depths = 7
-  shrinkages = seq(0.1,0.5,0.1) # c(.001, .01, .1, .5)
-  for (d in 1:length(depths)) {
-    for(e in 1:5){
-      cat("d=",d,"e=",e,'\n')
+  # First, tune depth and shrinkage parameters in ADV model:
+  depths = 6:10
+  shrinkages = seq(0.1, 0.5, 0.1) 
+  test_err = array(dim=c(length(depths), length(shrinkages)))
+  for (i in 1:length(depths)) {
+    for(j in 1:length(shrinkages)){
+      cat("i=",i,", j=",j,'\n')
       
-      param = list(objective = "binary:logistic",
-                    max_depth = depths[d],
-                    eta = shrinkages[e])
+      par = list(objective = "binary:logistic",
+                 max_depth = depths[i],
+                 eta = shrinkages[j], 
+                 subsample = 0.5,
+                 nrounds = 40)
       
-      mdcv <- xgb.cv(data=dtrain, params = param, 
-                     nthread=6, 
-                     nfold=5, 
-                     nrounds=1000,
-                     verbose = 0, 
-                     early.stop.round=8, 
-                     maximize=FALSE)
+      test_err[i,j] = cross_validation(X, y, par=par, K=5, model='ADV')
       
-      min_err = min(mdcv[, test.error.mean])
-      min_err_index = which.min(mdcv[, test.error.mean])
-      cv.result[[d-5,e]] = list(min_err,min_err_index)
-      if (min_err < best_err) {
-        best_err = min_err
-        best_err_index = min_err_index
-        best_seednumber = seed.number
-        best_param = param
-      }
     }
-  }    
+  }
+      
   
+  # Now train ADV model on the whole data using optimal shrinkage value
+  ind_min = which(test_err == min(test_err), arr.ind = TRUE)
+  depth = depths[ind_min[1]]
+  shrinkage = shrinkages[ind_min[2]]
+  par = list(depth=1, max_depth = depth, shrinkage=shrinkage, n.trees=100)
+  par = list(objective = "binary:logistic",
+             max_depth = depth,
+             eta = shrinkage, 
+             subsample = 0.5,
+             nrounds = 40)
+  ADV_model = train_ADV(X, y, par)
   
   
   ############################################### RETURN RESULT ###################################################### 
   
-  return(list(BL_model = BL_fit, 
-              ntrees_BL=ntrees_BL, 
-              ADV_model = ADV_fit))
+  BL_and_ADV_models = list(BL_model = BL_model, ADV_model = ADV_model)
+  return()
   
 }
 
