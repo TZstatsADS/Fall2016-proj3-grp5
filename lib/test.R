@@ -12,11 +12,20 @@ test = function(fit_train, dat_test){
   ###  -  processed features from testing images 
   ### Output: training model specification
   
-  library("gbm")
+  library('gbm')
+  library('xgboost')
   
-  pred = predict(fit_train$fit, newdata=dat_test, 
-                  n.trees=fit_train$iter, type="response")
-  
+  pred = switch(class(fit_train), 
+                 gbm = predict(fit_train, 
+                               newdata = dat_test, 
+                               n.trees = fit_train$n.trees, 
+                               type="response"),
+                 
+                 xgb = predict(fit_train, 
+                               newdata = dat_test)
+  )
+
+
   return(as.numeric(pred> 0.5))
 }
 

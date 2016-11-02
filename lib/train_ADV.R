@@ -12,7 +12,7 @@ train = function(X, y, par=NULL){
   #
   # Output: trained model objects for both models
   
-  library("gbm")
+  library('xgboost')
   
   if(is.null(par)){
     depth = 1

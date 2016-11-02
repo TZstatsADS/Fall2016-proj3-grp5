@@ -11,7 +11,6 @@ cross_validation = function(X, y, par=NULL, K=5, model='BL'){
   #
   # Output: mean test error over all folds
   
-  
   source("./lib/train_BL.R")
   source("./lib/train_ADV.R")
   source("./lib/test.R")

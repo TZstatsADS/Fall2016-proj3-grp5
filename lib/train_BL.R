@@ -9,7 +9,7 @@ train_BL = function(X, y, par=NULL){
   #
   # Output: trained model object
   
-  library("gbm")
+  library('gbm')
 
   if(is.null(par)){
     depth = 1
@@ -20,7 +20,6 @@ train_BL = function(X, y, par=NULL){
     eval(parse(text = paste(names(par), par, sep='=', collapse = ';')))
   }
   
-
   gbm_fit = gbm.fit(X, y,
                     distribution = "bernoulli",
                     n.trees = n.trees,
@@ -29,7 +28,5 @@ train_BL = function(X, y, par=NULL){
                     bag.fraction = 0.5,
                     verbose=FALSE)
   
-  best_iter = gbm.perf(gbm_fit, method="OOB")
-  
-  return(list(fit=gbm_fit, iter=best_iter))
+  return(gbm_fit)
 }
