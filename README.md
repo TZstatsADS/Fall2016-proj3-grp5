@@ -6,12 +6,12 @@ Term: Fall 2016
 
 + Team #
 + Team members
-	+ team member 1
-	+ team member 2
-	+ team member 3
-	+ team member 4
-	+ team member 5
-+ Project summary: In this project, we created a classification engine for images of poodles versus images of fried chickens. 
+	+ Alex Saez
+	+ Mengyuan Tao
+	+ Zichen Wu
+	+ Peiran Zhang
+	+ Mengya Zhao
++ Project summary: In this project, we created a classification engine for images of poodles versus images of fried chickens. We added new color features which decrease our test error a lot. At the same time, we trained our data by several classifiers, such as GBM, SVM, Randam Forest and Neural Network. Among these models, we select GBM as our baseline and advanced model.   
 	
 **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
 
