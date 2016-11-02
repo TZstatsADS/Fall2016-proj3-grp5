@@ -33,6 +33,7 @@ feature = function(img_dir){
 
   new_features = matrix(NA, length(files), 1000)
   for(i in 1:length(files)){
+    cat(files[i], '\n')
     
     img = readImage(paste(img_dir, files[i], sep=''))
 
