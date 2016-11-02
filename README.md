@@ -14,7 +14,7 @@ Term: Fall 2016
 + Project summary: In this project, we created a classification engine for images of poodles versus images of fried chicken. We added new color features which decrease our test error by a lot. At the same time, we tested several classifiers on our data: GBM, SVM, Random Forest and Neural Network. Among these models, GBM yielded the most accurate results. We found that the XGBoosting implementation of GBM was particularly effective in terms of training time (~2s) and we therefore chose it as our final model.
 	
 **Contribution statement**:<br/>
-Alex Saez tuned the baseline model, extracted the new color features and formatted the main code according to guidelines.<br/>
+Alex Saez tuned the baseline model, was responsible for the extraction of the new RGB features and formatted the main code according to guidelines.<br/>
 Mengyuan Tao tuned advanced model with xgboost, SVM with linear and radial kernel and Neural Network. Mengyuan also organized the presentation.<br/>
 Zichen Wu... <br/>
 Peiran Fang ran Random Forest and tuned the model.<br/>
