@@ -13,14 +13,13 @@ Term: Fall 2016
 	+ Mengya Zhao
 + Project summary: In this project, we created a classification engine for images of poodles versus images of fried chicken. We added new color features which decrease our test error by a lot. At the same time, we several classifiers on our data, such as GBM, SVM, Random Forest and Neural Network. Among these models, we select GBM as our baseline and advanced model.   
 	
-**Contribution statement**:
+**Contribution statement**:<br/>
 Alex Saez tuned the baseline model, extracted the new color features and formatted the main code according to guidelines.<br/>
 Mengyuan Tao...<br/>
 Zichen Wu... <br/>
 Peiran Zhang... <br/>
 Mengya Zhao... <br/>
 
-<br/>
 
 **Necessary libraries/packages:** <br/>
 data.table <br/>
