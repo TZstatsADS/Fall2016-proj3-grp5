@@ -3,8 +3,10 @@
 #############################################################
 
 
-feature = function(img_dir){
-  # INPUT: img_dir = directory with all the images to extract features from
+feature = function(img_dir, verbose=TRUE){
+  # INPUT: 
+  #     img_dir = directory with all the images to extract features from
+  #     verbose = if true, displays progress
   # OUTPUT: matrix new_features (format images*features)
   
   library("EBImage")
@@ -33,7 +35,9 @@ feature = function(img_dir){
 
   new_features = matrix(NA, length(files), 1000)
   for(i in 1:length(files)){
-    cat(files[i], '\n')
+    
+    if(verbose)
+      cat(files[i], '\n')
     
     img = readImage(paste(img_dir, files[i], sep=''))
 
