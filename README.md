@@ -23,11 +23,14 @@ Mengya Zhao... <br/>
 
 **Necessary libraries/packages:** <br/>
 data.table <br/>
+&nbsp;&nbsp;&nbsp;&nbsp; install.packages("data.table")  
 EBImage <br/>
-&nbsp;&nbsp;source("https://bioconductor.org/biocLite.R")  
-&nbsp;&nbsp;biocLite("EBImage")  
+&nbsp;&nbsp;&nbsp;&nbsp; source("https://bioconductor.org/biocLite.R")  
+&nbsp;&nbsp;&nbsp;&nbsp; biocLite("EBImage")  
 gbm <br/>
+&nbsp;&nbsp;&nbsp;&nbsp; install.packages("gbm")  
 xgboost <br/>
+&nbsp;&nbsp;&nbsp;&nbsp; install.packages("xgboost")  
 
 
 **R verion:** 3.3.1 <br/>
