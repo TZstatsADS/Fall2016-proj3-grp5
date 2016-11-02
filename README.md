@@ -17,7 +17,7 @@ Term: Fall 2016
 Alex Saez tuned the baseline model, extracted the new color features and formatted the main code according to guidelines.<br/>
 Mengyuan Tao...<br/>
 Zichen Wu... <br/>
-Peiran Zhang... <br/>
+Peiran Fang ran Random Forest and tuned the model.<br/>
 Mengya Zhao... <br/>
 
 
