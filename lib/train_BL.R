@@ -1,7 +1,7 @@
 
 
 train_BL = function(X, y, par=NULL){
-  # This function was used for tuning the baseline GBM model
+  # Train baseline model (GBM)
   # Input: 
   #   X =  matrix images*features  
   #   y = class labels for training images
@@ -10,18 +10,17 @@ train_BL = function(X, y, par=NULL){
   # Output: trained model object
   
   library("gbm")
-  
+
   if(is.null(par)){
     depth = 1
     shrinkage = 0.1
     n.trees = 100
   } 
   else {
-    depth = par$depth
-    shrinkage = par$shrinkage
-    n.trees = par$n.trees
+    eval(parse(text = paste(names(par), par, sep='=', collapse = ';')))
   }
   
+
   gbm_fit = gbm.fit(X, y,
                     distribution = "bernoulli",
                     n.trees = n.trees,
@@ -32,5 +31,5 @@ train_BL = function(X, y, par=NULL){
   
   best_iter = gbm.perf(gbm_fit, method="OOB")
   
-  return(list(fit=fit_gbm, iter=best_iter))
+  return(list(fit=gbm_fit, iter=best_iter))
 }

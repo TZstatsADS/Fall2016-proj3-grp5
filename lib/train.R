@@ -1,45 +1,50 @@
-#########################################################
-### Train a classification model with training images ###
-#########################################################
+##################################################
+### Train the baseline and the advanced model  ###
+##################################################
 
 
-train = function(X, y, par=NULL){
-  # Trains both the baseline and the advanced model
+Train = function(X, y){
   # Input: 
   #   X =  matrix images*features  
   #   y = class labels for training images
-  #   par = list of parameter values for both models
   #
   # Output: trained model objects for both models
   
-  library("gbm")
+  source('./lib/cross_validation.R')
+  source("./lib/train_BL.R")
+  source("./lib/train_ADV.R")
   
-  if(is.null(par)){
-    depth = 1
-    shrinkage = 0.1
-    n.trees = 100
-  } 
-  else {
-    eval(parse(text = paste(names(par), par, sep='=', collapse = ';')))
+  
+  
+  ############################################### BASELINE MODEL ###################################################### 
+  
+  # First, tune shrinkage parameter in BL model:
+  shrinkages = c(.0001, .001, .01, .1, .5)
+  test_err = numeric(length(shrinkages))
+  for(j in 1:length(shrinkages)){
+    cat("j=", j, "\n")
+    par = list(depth=1, shrinkage=shrinkages[j], n.trees=100)
+    test_err[j] = cross_validation(X, y, par=par, K=5, model='BL')
   }
   
-  # Baseline model:
-  BL_fit = gbm.fit(X, y,
-                    distribution = "bernoulli",
-                    n.trees = 100,
-                    interaction.depth = 1, 
-                    shrinkage = 0.1,
-                    bag.fraction = 0.5,
-                    verbose=FALSE)
   
-  ntrees_BL = gbm.perf(gbm_fit, method="OOB")
+  # Now train BL model on all the data using optimal shrinkage value
+  shrinkage = shrinkages(which.min(test_err))
+  par = list(depth=1, shrinkage=shrinkage, n.trees=100)
+  BL_fit = train_BL(train.data, train.label, par)
+  
+
+  ############################################### ADVANCED MODEL ###################################################### 
   
   
-  # Advanced model:
   
   
-  return(list(BL_fit=BL_fit, 
-              ntrees_BL=ntrees_BL))
+  
+  ############################################### ADVANCED MODEL ###################################################### 
+  
+  return(list(BL_model = BL_fit, 
+              ntrees_BL=ntrees_BL, 
+              ADV_model = ADV_fit))
   
 }
 
