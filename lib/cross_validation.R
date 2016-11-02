@@ -1,33 +1,42 @@
-########################
-### Cross Validation ###
-########################
 
 
-cv.function <- function(X, y, d=1, shrinkage=0.1, n.trees=100, K=5){
-  source("./lib/train.R")
+cross_validation = function(X, y, par=NULL, K=5, model='BL'){
+  # Cross validation function for either the baseline or the advanced model
+  # INPUT: 
+  #     X =  matrix in images*features format
+  #     y = class labels for training images
+  #     K = number of folds
+  #     par = list of parameter values, passed on directly to training functions
+  #     moldel = either 'BL' or 'ADV' for baseline or advanced model
+  #
+  # OUTPUT: mean test error over all folds
+  
+  source("./lib/train_BL.R")
+  source("./lib/train_ADV.R")
   source("./lib/test.R")
   
-  
-  n <- length(y)
-  n.fold <- floor(n/K)
-  s <- sample(rep(1:K, c(rep(n.fold, K-1), n-(K-1)*n.fold)))  
-  cv.error <- rep(NA, K)
-  optimal_n_trees <- rep(NA, K)
+  n = length(y)
+  n.fold = floor(n/K)
+  s = sample(rep(1:K, c(rep(n.fold, K-1), n-(K-1)*n.fold)))  
+  cv.error = rep(NA, K)
   
   for (i in 1:K){
-    train.data <- X[s != i,]
-    train.label <- y[s != i]
-    test.data <- X[s == i,]
-    test.label <- y[s == i]
+    train.data = X[s != i,]
+    train.label = y[s != i]
+    test.data = X[s == i,]
+    test.label = y[s == i]
     
-    par <- list(depth=d, shrinkage=shrinkage, n.trees = n.trees)
-    fit <- train(train.data, train.label, par)
-    pred <- test(fit, test.data)  
+    fit = switch(model,
+                 BL = train_BL(train.data, train.label, par),
+                 ADV = train_ADV(train.data, train.label, par)
+    )
     
-    cv.error[i] <- mean(pred != test.label) 
-    optimal_n_trees[i] = fit$iter # optimal number of trees
+    pred = test(fit, test.data)  
+    
+    cv.error[i] = mean(pred != test.label) 
     
   }			
-  return(c(mean(cv.error), sd(cv.error), mean(optimal_n_trees), sd(optimal_n_trees)))
+  
+  return(mean(cv.error))
   
 }
