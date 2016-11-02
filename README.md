@@ -22,6 +22,16 @@ Mengya Zhao... <br/>
 
 
 **Necessary libraries/packages:** <br/>
+1. data.table
+⋅⋅* install.packages("data.table")
+2. EBImage
+⋅⋅* source("https://bioconductor.org/biocLite.R")
+⋅⋅* biocLite("EBImage")
+3. gbm
+⋅⋅* install.packages("gbm")
+4. xgboost
+⋅⋅* install.packages("xgboost")
+
 data.table <br/>
 &nbsp;&nbsp;&nbsp;&nbsp; install.packages("data.table")  
 EBImage <br/>
