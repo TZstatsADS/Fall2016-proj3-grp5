@@ -20,16 +20,18 @@ train = function(X, y){
   
   # First, tune shrinkage parameter in BL model:
   shrinkages = c(.001, .01, .1, .5)
-  test_err = numeric(length(shrinkages))
+  test_err_BL = numeric(length(shrinkages))
   for(j in 1:length(shrinkages)){
-    cat("j=", j, "\n")
+    cat("BL model CV: j =", j, "of",length(shrinkages), "\n")
     
     par = list(depth=1, 
                shrinkage=shrinkages[j], 
                n.trees=100)
     
-    test_err[j] = cross_validation(X, y, par=par, K=5, model='BL')
+    test_err_BL[j] = cross_validation(X, y, par=par, K=5, model='BL')
   }
+  
+  print(test_err_BL)   
   
   # Now train BL model on the whole data using optimal shrinkage value
   shrinkage = shrinkages[which.min(test_err)]
@@ -42,10 +44,10 @@ train = function(X, y){
   # First, tune depth and shrinkage parameters in ADV model:
   depths = 6:10
   shrinkages = seq(0.1, 0.5, 0.1) 
-  test_err = array(dim=c(length(depths), length(shrinkages)))
+  test_err_ADV = array(dim=c(length(depths), length(shrinkages)))
   for (i in 1:length(depths)) {
     for(j in 1:length(shrinkages)){
-      cat("i=",i,", j=",j,'\n')
+      cat("ADV model CV: i =", i, "of",length(depths),", j =", j, "of",length(shrinkages), "\n")
       
       par = list(objective = "binary:logistic",
                  max_depth = depths[i],
@@ -53,11 +55,12 @@ train = function(X, y){
                  subsample = 0.5,
                  nrounds = 40)
       
-      test_err[i,j] = cross_validation(X, y, par=par, K=5, model='ADV')
+      test_err_ADV[i,j] = cross_validation(X, y, par=par, K=5, model='ADV')
       
     }
   }
-      
+   
+  print(test_err_ADV)   
   
   # Now train ADV model on the whole data using optimal shrinkage value
   ind_min = which(test_err == min(test_err), arr.ind = TRUE)
@@ -75,7 +78,8 @@ train = function(X, y){
   ############################################### RETURN RESULT ###################################################### 
   
   BL_and_ADV_models = list(BL_model = BL_model, ADV_model = ADV_model)
-  return()
+  save(BL_and_ADV_models, file = './output/BL_and_ADV_models.RData')
+  return(BL_and_ADV_models)
   
 }
 
