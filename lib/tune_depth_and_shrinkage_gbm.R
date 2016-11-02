@@ -8,7 +8,7 @@ source("./lib/cross_validation.R")
 ### Import matrix of features X and create vector of labels y
 X = fread("./data/sift_features.csv")
 X  = t(as.matrix(X))
-y = c(rep(0,1000), rep(1, 1000))
+y = c(rep(1,1000), rep(0, 1000))
 
 
 

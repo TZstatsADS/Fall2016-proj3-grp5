@@ -3,12 +3,13 @@
 ##################################################
 
 
-train = function(X, y){
-  # Input: 
-  #   X =  matrix images*features  
-  #   y = class labels for training images
+train = function(X, y, savedir=NULL){
+  # INPUT: 
+  #     X = matrix in images*features format
+  #     y = class labels for training images
+  #     savedir = if defined, save trained models in this directory
   #
-  # Output: trained model objects for both models
+  # OUTPUT: trained model objects for both basline and advanced models
   
   source('./lib/cross_validation.R')
   source("./lib/train_BL.R")
@@ -34,15 +35,18 @@ train = function(X, y){
   print(test_err_BL)   
   
   # Now train BL model on the whole data using optimal shrinkage value
+  t = proc.time()
   shrinkage = shrinkages[which.min(test_err_BL)]
   par = list(depth=1, shrinkage=shrinkage, n.trees=100)
   BL_model = train_BL(X, y, par)
+  
+  cat("Baseline model training time:", (proc.time()-t)[3], " seconds \n")
   
 
   ############################################### ADVANCED MODEL ###################################################### 
   
   # First, tune depth and shrinkage parameters in ADV model:
-  depths = 6:10
+  depths = seq(6, 10, 1)
   shrinkages = seq(0.1, 0.5, 0.1) 
   test_err_ADV = array(dim=c(length(depths), length(shrinkages)))
   for (i in 1:length(depths)) {
@@ -60,9 +64,10 @@ train = function(X, y){
     }
   }
    
-  print(test_err_ADV)   
+  print(test_err_ADV) 
   
   # Now train ADV model on the whole data using optimal shrinkage value
+  t = proc.time()
   ind_min = which(test_err_ADV == min(test_err_ADV), arr.ind = TRUE)
   depth = depths[ind_min[1]]
   shrinkage = shrinkages[ind_min[2]]
@@ -74,12 +79,17 @@ train = function(X, y){
              nrounds = 40)
   ADV_model = train_ADV(X, y, par)
   
+  cat("Advanced model training time:", (proc.time()-t)[3], " seconds \n")
+  
   
   ############################################### RETURN RESULTS ###################################################### 
   
-  BL_and_ADV_models = list(BL_model = BL_model, ADV_model = ADV_model)
-  save(BL_and_ADV_models, file = './output/BL_and_ADV_models0.RData')
-  return(BL_and_ADV_models)
+  models = list(BL_model = BL_model, ADV_model = ADV_model)
+  
+  if(!is.null(savedir))
+    save(models, file = paste(savedir, 'BL_and_ADV_models.RData', sep=''))
+  
+  return(models)
   
 }
 

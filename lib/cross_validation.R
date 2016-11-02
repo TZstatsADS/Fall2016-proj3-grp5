@@ -1,15 +1,15 @@
 
-# Cross validation function for either the baseline or the advanced model
 
 cross_validation = function(X, y, par=NULL, K=5, model='BL'){
-  # Input: 
-  #   X =  matrix images*features  
-  #   y = class labels for training images
-  #   K = number of folds
-  #   par = list of parameter values, passed on directly to training functions
-  #   moldel = either 'BL' or 'ADV' for baseline or advanced model
+  # Cross validation function for either the baseline or the advanced model
+  # INPUT: 
+  #     X =  matrix in images*features format
+  #     y = class labels for training images
+  #     K = number of folds
+  #     par = list of parameter values, passed on directly to training functions
+  #     moldel = either 'BL' or 'ADV' for baseline or advanced model
   #
-  # Output: mean test error over all folds
+  # OUTPUT: mean test error over all folds
   
   source("./lib/train_BL.R")
   source("./lib/train_ADV.R")

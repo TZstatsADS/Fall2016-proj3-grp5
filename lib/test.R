@@ -4,13 +4,12 @@
 
 
 test = function(fit_train, dat_test){
-  
-  ### Fit the classfication model with testing data
-  
-  ### Input: 
-  ###  - the fitted classification model using training data
-  ###  -  processed features from testing images 
-  ### Output: training model specification
+  # Fit the classfication model with testing data
+  # INPUT: 
+  #     fit_train = trained model object, either gbm or xgb.Booster
+  #     dat_test = processed features from testing images 
+  #
+  # OUTPUT: training model specification
   
   library('gbm')
   library('xgboost')

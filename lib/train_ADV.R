@@ -1,16 +1,12 @@
-#########################################################
-### Train a classification model with training images ###
-#########################################################
-
 
 train_ADV = function(X, y, par){
-  # Trains both the baseline and the advanced model
-  # Input: 
-  #   X =  matrix images*features  
+  # Training function for the advanced model
+  # INPUT: 
+  #   X =  matrix in images*features format
   #   y = class labels for training images
-  #   par = list of parameter values for both xgb.train
+  #   par = list of parameter values for xgb.train
   #
-  # Output: trained model objects for both models
+  # OUTPUT: trained model object
   
   library('xgboost')
   

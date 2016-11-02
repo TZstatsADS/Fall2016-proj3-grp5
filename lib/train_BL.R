@@ -1,13 +1,13 @@
 
 
 train_BL = function(X, y, par=NULL){
-  # Train baseline model (GBM)
-  # Input: 
-  #   X =  matrix images*features  
-  #   y = class labels for training images
-  #   par = list of values for params depth, shrinkage and n.trees
+  # Training function for the baseline model (GBM)
+  # INPUT: 
+  #     X =  matrix in images*features format
+  #     y = class labels for training images
+  #     par = list of values for params depth, shrinkage and n.trees
   #
-  # Output: trained model object
+  # OUTPUT: trained model object
   
   library('gbm')
 

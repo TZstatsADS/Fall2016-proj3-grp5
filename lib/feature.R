@@ -4,7 +4,7 @@
 
 
 feature = function(img_dir){
-  # INPUT: directory with all the images to extract features from
+  # INPUT: img_dir = directory with all the images to extract features from
   # OUTPUT: matrix new_features (format images*features)
   
   library("EBImage")
