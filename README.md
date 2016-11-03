@@ -16,7 +16,7 @@ Term: Fall 2016
 **Contribution statement**:<br/>
 Alex Saez tuned the baseline model, was responsible for the extraction of the new RGB features and formatted the main code according to guidelines.<br/>
 Mengyuan Tao tuned advanced model with xgboost, SVM with linear and radial kernel and Neural Network. Mengyuan also organized the presentation.<br/>
-Zichen Wu... <br/>
+Zichen Wu tuned the SVM model with radial and polynomial kernels, was responsible for extraction of contrast(pixel) features <br/>
 Peiran Fang ran Random Forest and tuned the model.<br/>
 Mengya Zhao... <br/>
 
